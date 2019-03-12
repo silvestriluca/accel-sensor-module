@@ -40,12 +40,17 @@ class MPU6050 {
   /**
    * Read data from sensor syncrounously
    *
-   * @returns
+   * @returns An object containing 
    * @memberof MPU6050
    */
   readSync(){
     var data = this.sensor.readSync();
     return data;
+  }
+
+  calibrateSensor(staticMeasure){
+    this.sensor.calibrateAccel(staticMeasure.accel);
+    this.sensor.calibrateGyro(staticMeasure.gyro);
   }
 }
 

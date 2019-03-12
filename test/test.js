@@ -40,4 +40,12 @@ describe('Tries a sync read of the sensor and check for result', function(){
     assert.nestedProperty(data,'rotation.x', 'Does not have rotation.x property');
     assert.nestedProperty(data,'rotation.y', 'Does not have rotation.y property');
   });
+  it('Tests calibration', function(){
+    //Calibrates sensor
+    sensorInstance.calibrateSensor(data);
+    //Read the calibrated data from the sensor
+    let calibratedData = sensorInstance.readSync();
+    console.log('Calibrated data:');
+    console.log(calibratedData);
+  });
 });
