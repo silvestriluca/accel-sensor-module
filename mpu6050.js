@@ -62,14 +62,14 @@ class MPU6050 {
     };
     //Evaluates the calibration values for acceleration
     for (const key in staticMeasure.accel) {
-      if (object.hasOwnProperty(key)) {
+      if (staticMeasure.accel.hasOwnProperty(key)) {
         const element = staticMeasure.accel[key];
         calibration.accel = -element;
       }
     }
     //Evaluates the calibration values for gyro
     for (const key in staticMeasure.gyro) {
-      if (object.hasOwnProperty(key)) {
+      if (staticMeasure.accel.hasOwnProperty(key)) {
         const element = staticMeasure.accel[key];
         calibration.gyro = -element;
       }
