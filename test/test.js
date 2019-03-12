@@ -47,5 +47,8 @@ describe('Tries a sync read of the sensor and check for result', function(){
     let calibratedData = sensorInstance.readSync();
     console.log('Calibrated data:');
     console.log(calibratedData);
+    assert.isTrue(calibratedData.accel.x < 0.1 && calibratedData.accel.x > -0.1, 'Accel x is out of calibration limits');
+    assert.isTrue(calibratedData.accel.y < 0.1 && calibratedData.accel.y > -0.1, 'Accel y is out of calibration limits');
+    assert.isTrue(calibratedData.accel.z < 0.1 && calibratedData.accel.z > -0.1, 'Accel z is out of calibration limits');
   });
 });
