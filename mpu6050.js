@@ -18,14 +18,33 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+var i2c = require('i2c-bus');
+var i2cMPU6050 = require('i2c-mpu6050');
+
 /**
  *Describes a MPU6050 sensor
  *
  * @class MPU6050
  */
 class MPU6050 {
-  constructor(){
+  /**
+   *Creates an instance of MPU6050.
+   * @param {Number} address - Sensor address number in HEX notation
+   * @memberof MPU6050
+   */
+  constructor(address){
+    var i2c1 = i2c.openSync(1);
+    this.sensor = new i2cMPU6050(i2c1,address);
+  }
 
+  /**
+   *Read data from sensor syncrounously
+   *
+   * @returns {}
+   * @memberof MPU6050
+   */
+  readSync(){
+    return this.sensor.readSync();
   }
 }
 

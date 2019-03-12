@@ -21,3 +21,9 @@
 
 var assert = require('assert');
 var Sensor = require('../mpu6050');
+
+describe('Tries a sync read of the sensor', function(){
+  var sensorInstance = new Sensor(0x68);
+  var data = sensorInstance.readSync();
+  console.log(data);
+});
