@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-
 /* 
-  <mpu6050 module>
+  <mpu6050 tests>
   Copyright (C) <2019>  <Luca Silvestri>
 
   This program is free software: you can redistribute it and/or modify
@@ -18,15 +16,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-/**
- *Describes a MPU6050 sensor
- *
- * @class MPU6050
- */
-class MPU6050 {
-  constructor(){
+/* eslint-env node, mocha */
+/* eslint quotes: ["error", "single"]*/
 
-  }
-}
-
-module.exports = MPU6050;
+var assert = require('assert');
+var Sensor = require('../mpu6050');

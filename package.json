@@ -13,7 +13,12 @@
   "author": "Luca Silvestri",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
+    "eslint": "^5.15.1",
     "mocha": "^6.0.2",
     "nyc": "^13.3.0"
+  },
+  "dependencies": {
+    "i2c-bus": "^4.0.8",
+    "i2c-mpu6050": "^2.3.0"
   }
 }
