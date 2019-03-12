@@ -38,13 +38,14 @@ class MPU6050 {
   }
 
   /**
-   *Read data from sensor syncrounously
+   * Read data from sensor syncrounously
    *
-   * @returns {}
+   * @returns
    * @memberof MPU6050
    */
   readSync(){
-    return this.sensor.readSync();
+    var data = this.sensor.readSync();
+    return data;
   }
 }
 
