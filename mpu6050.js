@@ -67,15 +67,7 @@ class MPU6050 {
         calibration.accel[key] = -element;
       }
     }
-    //Evaluates the calibration values for gyro
-    for (const key in staticMeasure.gyro) {
-      if (staticMeasure.accel.hasOwnProperty(key)) {
-        const element = staticMeasure.accel[key];
-        calibration.gyro[key] = -element;
-      }
-    }
     this.sensor.calibrateAccel(calibration.accel);
-    this.sensor.calibrateGyro(calibration.gyro);
   }
 }
 
