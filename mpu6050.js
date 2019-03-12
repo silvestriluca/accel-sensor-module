@@ -48,9 +48,34 @@ class MPU6050 {
     return data;
   }
 
+  /**
+   *Perform a sensor calibration with data from a static measure
+   *
+   * @param {{object}} staticMeasure A sensor read when it's static (not moving)
+   * @memberof MPU6050
+   */
   calibrateSensor(staticMeasure){
-    this.sensor.calibrateAccel(staticMeasure.accel);
-    this.sensor.calibrateGyro(staticMeasure.gyro);
+    //Defines a calibration object
+    let calibration = {
+      accel: {},
+      gyro: {}
+    };
+    //Evaluates the calibration values for acceleration
+    for (const key in staticMeasure.accel) {
+      if (object.hasOwnProperty(key)) {
+        const element = staticMeasure.accel[key];
+        calibration.accel = -element;
+      }
+    }
+    //Evaluates the calibration values for gyro
+    for (const key in staticMeasure.gyro) {
+      if (object.hasOwnProperty(key)) {
+        const element = staticMeasure.accel[key];
+        calibration.gyro = -element;
+      }
+    }
+    this.sensor.calibrateAccel(calibration.accel);
+    this.sensor.calibrateGyro(calibration.gyro);
   }
 }
 
