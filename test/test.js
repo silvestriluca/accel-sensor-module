@@ -73,6 +73,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
         assert.nestedProperty(asyncData,'accel.z', 'Does not have accel.z property');
         assert.nestedProperty(asyncData,'rotation.x', 'Does not have rotation.x property');
         assert.nestedProperty(asyncData,'rotation.y', 'Does not have rotation.y property');
+        done();
       }
     });
   });

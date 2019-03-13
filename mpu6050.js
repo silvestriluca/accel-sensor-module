@@ -55,7 +55,7 @@ class MPU6050 {
    * @memberof MPU6050
    */
   readAsync(callback) {
-    this.sensor.read(callback(err, data));
+    this.sensor.read(callback);
   }
 
   /**
