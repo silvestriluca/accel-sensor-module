@@ -40,6 +40,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
     assert.nestedProperty(data,'rotation.x', 'Does not have rotation.x property');
     assert.nestedProperty(data,'rotation.y', 'Does not have rotation.y property');
   });
+
   it('Tests calibration', function(){
     //Calibrates sensor
     sensorInstance.calibrateSensor(data);
@@ -50,5 +51,29 @@ describe('Tries a sync read of the sensor and check for result', function(){
     assert.isTrue(calibratedData.accel.x < 0.1 && calibratedData.accel.x > -0.1, 'Accel x is out of calibration limits');
     assert.isTrue(calibratedData.accel.y < 0.1 && calibratedData.accel.y > -0.1, 'Accel y is out of calibration limits');
     assert.isTrue(calibratedData.accel.z < 0.1 && calibratedData.accel.z > -0.1, 'Accel z is out of calibration limits');
+  });
+
+  it('Tests read asyncronously', function(done){
+    //Read asyncronously
+    sensorInstance.readAsync(function(err, asyncData){
+      if(err){
+        done(err);
+      } else {
+        console.log('Async data: ');
+        console.log(asyncData);
+        assert.property(asyncData,'gyro', 'Does not have gyro property');
+        assert.property(asyncData,'accel', 'Does not have accel property');
+        assert.property(asyncData,'rotation', 'Does not have rotation property');
+        assert.property(asyncData,'temp', 'Does not have temp property');
+        assert.nestedProperty(asyncData,'gyro.x', 'Does not have gyro.x property');
+        assert.nestedProperty(asyncData,'gyro.y', 'Does not have gyro.y property');
+        assert.nestedProperty(asyncData,'gyro.z', 'Does not have gyro.z property');
+        assert.nestedProperty(asyncData,'accel.x', 'Does not have accel.x property');
+        assert.nestedProperty(asyncData,'accel.y', 'Does not have accel.y property');
+        assert.nestedProperty(asyncData,'accel.z', 'Does not have accel.z property');
+        assert.nestedProperty(asyncData,'rotation.x', 'Does not have rotation.x property');
+        assert.nestedProperty(asyncData,'rotation.y', 'Does not have rotation.y property');
+      }
+    });
   });
 });

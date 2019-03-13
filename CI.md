@@ -17,4 +17,3 @@
 3. Install the latest version of GitLab Runner:
 
 `sudo apt-get install gitlab-runner`
-
