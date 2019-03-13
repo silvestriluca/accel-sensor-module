@@ -49,6 +49,16 @@ class MPU6050 {
   }
 
   /**
+   * Read data from sensor asyncrounously
+   *
+   * @param {function(Error, object)} callback The callback(err, data) function 
+   * @memberof MPU6050
+   */
+  readAsync(callback) {
+    this.sensor.read(callback(err, data));
+  }
+
+  /**
    *Perform a sensor calibration with data from a static measure
    *
    * @param {{object}} staticMeasure A sensor read when it's static (not moving)
