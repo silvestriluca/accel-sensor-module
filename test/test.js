@@ -25,6 +25,8 @@ var Sensor = require('../mpu6050');
 describe('Tries a sync read of the sensor and check for result', function(){
   var sensorInstance = new Sensor(0x68);
   var data = sensorInstance.readSync();
+  //Repeats the read for cold starts
+  data = sensorInstance.readSync();
   console.log(data);
   it('Tests if data is properly formatted', function(){
     assert.property(data,'gyro', 'Does not have gyro property');
