@@ -79,4 +79,30 @@ describe('Tries a sync read of the sensor and check for result', function(){
       }
     });
   });
+  describe('Tests poolSensorData', function(){
+    it('poolSensorData: all the options', function(done){
+      sensorInstance.poolSensorData({interval: 2000, limit: 10}, function(err, data){
+        if(err){
+          done(err);
+        } else {
+          assert.strictEqual(data[0].interval, 2000);
+          assert.strictEqual(data[0].limit, 10);
+          assert.strictEqual(typeof data[1], 'function');
+          done();
+        }
+      });  
+    });
+
+    it('poolSensorData: number', function(done){
+      sensorInstance.poolSensorData(3000, function(err, data){
+        if(err){
+          done(err);
+        } else {
+          assert.strictEqual(data[0].interval, 3000);
+          assert.strictEqual(typeof data[1], 'function');
+          done();
+        }
+      });  
+    });
+  });
 });

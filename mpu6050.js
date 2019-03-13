@@ -21,6 +21,8 @@
 var i2c = require('i2c-bus');
 var i2cMPU6050 = require('i2c-mpu6050');
 
+const DEFAULT_POOL_INTERVAL = 1000;
+
 /**
  *Describes a MPU6050 sensor
  *
@@ -78,6 +80,62 @@ class MPU6050 {
       }
     }
     this.sensor.calibrateAccel(calibration.accel);
+  }
+
+  /**
+   * Pools sensor data at a given interval
+   *
+   * @param {{interval:Number, limit:Number}} opts Options. Interval default is 1000s
+   * @param {function(Error,Any)} callback Callback function (err, data)
+   * @returns
+   * @memberof MPU6050
+   */
+  poolSensorData(opts, callback){
+    //Check parameters
+    if(!opts){
+      //opts is null. Sets default interval
+      opts = {
+        interval: DEFAULT_POOL_INTERVAL
+      }      
+    } else {
+      switch (typeof opts) {
+        case 'function':
+          //callback passed as first argument. Set interval as default
+          callback = opts;
+          opts = {
+            interval: DEFAULT_POOL_INTERVAL
+          }          
+          break;
+        case 'number':
+          //puts the supplied interval in the opts object
+          opts = {
+            interval: opts
+          }
+          break;
+        case 'string':
+          //Rise an error and exits
+          let err = new Error('poolSensorData: opts parameter has to be a number or an object');
+          return callback(err);
+        default:
+          break;
+      }
+    }
+    if(!callback){
+      //If callback is not there, then substitute with a dummy function
+      callback = () => {return};
+    } else {
+      switch (typeof callback) {
+        case 'function':
+          //callback is a function. Go on.          
+          break;      
+        default:
+          //callback is anything but a function. Substitute with dummy function
+          callback = () => {return}; 
+          break;
+      }
+    }
+    //Calls the callback
+    callback(null, [opts, callback]);
   }
 }
 
