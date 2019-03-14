@@ -166,7 +166,7 @@ class MPU6050 {
           }
         }
       });
-    })
+    },opts.interval);
   }
 }
 
