@@ -90,7 +90,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
           done(err);
         } else {
           console.log(data[0]);
-          assert.strictEqual(data[1].interval, 2000);
+          assert.strictEqual(data[1].interval, 500);
           assert.strictEqual(data[1].limit, 10);
           assert.strictEqual(typeof data[2], 'function');
           count = count + 1;
