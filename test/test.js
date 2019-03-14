@@ -94,7 +94,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
           assert.strictEqual(data[1].limit, 10);
           assert.strictEqual(typeof data[2], 'function');
           count = count + 1;
-          if(count >= DEFAULT_TEST_LIMIT){
+          if(count >= 10){
             done();
           }
         }
