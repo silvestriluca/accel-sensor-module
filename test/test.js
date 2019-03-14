@@ -104,5 +104,64 @@ describe('Tries a sync read of the sensor and check for result', function(){
         }
       });  
     });
+
+    it('poolSensorData: options is null', function(done){
+      sensorInstance.poolSensorData(null, function(err, data){
+        if(err){
+          done(err);
+        } else {
+          assert.strictEqual(data[0].interval, 1000);
+          assert.strictEqual(typeof data[1], 'function');
+          done();
+        }
+      });
+    });
+
+    it('poolSensorData: function as first argument', function(done){
+      sensorInstance.poolSensorData(function(err, data){
+        if(err){
+          done(err);
+        } else {
+          assert.strictEqual(data[0].interval, 1000);
+          assert.strictEqual(typeof data[1], 'function');
+          done();
+        }
+      });
+    });
+
+    it('poolSensorData: string as first argument', function(done){
+      sensorInstance.poolSensorData('hello', function(err, data){
+        if(err){
+          assert.strictEqual(err.name, 'WRONG_PARAM_TYPE', 'Wrong error type');
+          done();
+        } else {
+          assert.ok(false, 'Did not got an error when supplied string as option value');
+          done();
+        }
+      });
+    });
+
+    it('poolSensorData: only callback as argument', function(done){
+      sensorInstance.poolSensorData(function(err, data){
+        if(err){
+          done(err);
+        } else {
+          assert.strictEqual(data[0].interval, 1000);
+          assert.strictEqual(typeof data[1], 'function');
+          done();
+        }
+      });
+    });  
+    
+    it('poolSensorData: no callback provided', function(done){
+      assert.doesNotThrow(sensorInstance.poolSensorData(3000));      
+      done();
+    }); 
+    
+    it('poolSensorData: no proper callback provided', function(done){
+      assert.doesNotThrow(sensorInstance.poolSensorData(3000, 'no proper callback'));      
+      done();
+    });     
+    
   });
 });

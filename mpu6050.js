@@ -115,6 +115,7 @@ class MPU6050 {
         case 'string':
           //Rise an error and exits
           let err = new Error('poolSensorData: opts parameter has to be a number or an object');
+          err.name = 'WRONG_PARAM_TYPE';
           return callback(err);
         default:
           break;
