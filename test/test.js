@@ -154,12 +154,12 @@ describe('Tries a sync read of the sensor and check for result', function(){
     });  
     
     it('poolSensorData: no callback provided', function(done){
-      assert.doesNotThrow(sensorInstance.poolSensorData(3000));      
+      assert.doesNotThrow(() => sensorInstance.poolSensorData(3000));      
       done();
     }); 
     
     it('poolSensorData: no proper callback provided', function(done){
-      assert.doesNotThrow(sensorInstance.poolSensorData(3000, 'no proper callback'));      
+      assert.doesNotThrow(() => sensorInstance.poolSensorData(3000, 'no proper callback'));      
       done();
     });     
     
