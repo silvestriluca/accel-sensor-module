@@ -82,6 +82,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
     });
   });
   describe('Tests poolSensorData', function(){
+    this.timeout(50000);
     it('poolSensorData: all the options', function(done){
       let count = 0;
       sensorInstance.poolSensorData({interval: 2000, limit: 10}, function(err, data){
@@ -100,7 +101,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
       }, true);  
     });
 
-    it('poolSensorData: number', function(done){
+    it.skip('poolSensorData: number', function(done){
       let count = 0;
       sensorInstance.poolSensorData(3000, function(err, data){
         if(err){
@@ -116,7 +117,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
       }, true);  
     });
 
-    it('poolSensorData: options is null', function(done){
+    it.skip('poolSensorData: options is null', function(done){
       let count = 0;
       sensorInstance.poolSensorData(null, function(err, data){
         if(err){
@@ -132,7 +133,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
       }, true);
     });
 
-    it('poolSensorData: function as first argument', function(done){
+    it.skip('poolSensorData: function as first argument', function(done){
       let count = 0;
       sensorInstance.poolSensorData(function(err, data){
         if(err){
@@ -148,7 +149,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
       }, null, true);
     });
 
-    it('poolSensorData: string as first argument', function(done){
+    it.skip('poolSensorData: string as first argument', function(done){
       sensorInstance.poolSensorData('hello', function(err){
         if(err){
           assert.strictEqual(err.name, 'WRONG_PARAM_TYPE', 'Wrong error type');
@@ -160,7 +161,7 @@ describe('Tries a sync read of the sensor and check for result', function(){
       }, true);
     });
 
-    it('poolSensorData: only callback as argument', function(done){
+    it.skip('poolSensorData: only callback as argument', function(done){
       let count = 0;
       sensorInstance.poolSensorData(function(err, data){
         if(err){
@@ -176,12 +177,12 @@ describe('Tries a sync read of the sensor and check for result', function(){
       }, null, true);
     });  
     
-    it('poolSensorData: no callback provided', function(done){
+    it.skip('poolSensorData: no callback provided', function(done){
       assert.doesNotThrow(() => sensorInstance.poolSensorData(3000, null, true));      
       done();
     }); 
     
-    it('poolSensorData: no proper callback provided', function(done){
+    it.skip('poolSensorData: no proper callback provided', function(done){
       assert.doesNotThrow(() => sensorInstance.poolSensorData(3000, 'no proper callback', true));      
       done();
     });     
