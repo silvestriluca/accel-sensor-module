@@ -22,6 +22,8 @@
 var assert = require('chai').assert;
 var Sensor = require('../mpu6050');
 
+const DEFAULT_TEST_LIMIT = 5;
+
 describe('Tries a sync read of the sensor and check for result', function(){
   var sensorInstance = new Sensor(0x68);
   var data = sensorInstance.readSync();
@@ -81,56 +83,73 @@ describe('Tries a sync read of the sensor and check for result', function(){
   });
   describe('Tests poolSensorData', function(){
     it('poolSensorData: all the options', function(done){
+      let count = 0;
       sensorInstance.poolSensorData({interval: 2000, limit: 10}, function(err, data){
         if(err){
           done(err);
         } else {
-          assert.strictEqual(data[0].interval, 2000);
-          assert.strictEqual(data[0].limit, 10);
-          assert.strictEqual(typeof data[1], 'function');
-          done();
+          console.log(data[0]);
+          assert.strictEqual(data[1].interval, 2000);
+          assert.strictEqual(data[1].limit, 10);
+          assert.strictEqual(typeof data[2], 'function');
+          count = count + 1;
+          if(count >= DEFAULT_TEST_LIMIT){
+            done();
+          }
         }
-      });  
+      }, true);  
     });
 
     it('poolSensorData: number', function(done){
+      let count = 0;
       sensorInstance.poolSensorData(3000, function(err, data){
         if(err){
           done(err);
         } else {
-          assert.strictEqual(data[0].interval, 3000);
-          assert.strictEqual(typeof data[1], 'function');
-          done();
+          assert.strictEqual(data[1].interval, 3000);
+          assert.strictEqual(typeof data[2], 'function');
+          count = count + 1;
+          if(count >= DEFAULT_TEST_LIMIT){
+            done();
+          }
         }
-      });  
+      }, true);  
     });
 
     it('poolSensorData: options is null', function(done){
+      let count = 0;
       sensorInstance.poolSensorData(null, function(err, data){
         if(err){
           done(err);
         } else {
-          assert.strictEqual(data[0].interval, 1000);
-          assert.strictEqual(typeof data[1], 'function');
-          done();
+          assert.strictEqual(data[1].interval, 1000);
+          assert.strictEqual(typeof data[2], 'function');
+          count = count + 1;
+          if(count >= DEFAULT_TEST_LIMIT){
+            done();
+          }
         }
-      });
+      }, true);
     });
 
     it('poolSensorData: function as first argument', function(done){
+      let count = 0;
       sensorInstance.poolSensorData(function(err, data){
         if(err){
           done(err);
         } else {
-          assert.strictEqual(data[0].interval, 1000);
-          assert.strictEqual(typeof data[1], 'function');
-          done();
+          assert.strictEqual(data[1].interval, 1000);
+          assert.strictEqual(typeof data[2], 'function');
+          count = count + 1;
+          if(count >= DEFAULT_TEST_LIMIT){
+            done();
+          }
         }
-      });
+      }, null, true);
     });
 
     it('poolSensorData: string as first argument', function(done){
-      sensorInstance.poolSensorData('hello', function(err, data){
+      sensorInstance.poolSensorData('hello', function(err){
         if(err){
           assert.strictEqual(err.name, 'WRONG_PARAM_TYPE', 'Wrong error type');
           done();
@@ -138,28 +157,32 @@ describe('Tries a sync read of the sensor and check for result', function(){
           assert.ok(false, 'Did not got an error when supplied string as option value');
           done();
         }
-      });
+      }, true);
     });
 
     it('poolSensorData: only callback as argument', function(done){
+      let count = 0;
       sensorInstance.poolSensorData(function(err, data){
         if(err){
           done(err);
         } else {
-          assert.strictEqual(data[0].interval, 1000);
-          assert.strictEqual(typeof data[1], 'function');
-          done();
+          assert.strictEqual(data[1].interval, 1000);
+          assert.strictEqual(typeof data[2], 'function');
+          count = count + 1;
+          if(count >= DEFAULT_TEST_LIMIT){
+            done();
+          }
         }
-      });
+      }, null, true);
     });  
     
     it('poolSensorData: no callback provided', function(done){
-      assert.doesNotThrow(() => sensorInstance.poolSensorData(3000));      
+      assert.doesNotThrow(() => sensorInstance.poolSensorData(3000, null, true));      
       done();
     }); 
     
     it('poolSensorData: no proper callback provided', function(done){
-      assert.doesNotThrow(() => sensorInstance.poolSensorData(3000, 'no proper callback'));      
+      assert.doesNotThrow(() => sensorInstance.poolSensorData(3000, 'no proper callback', true));      
       done();
     });     
     

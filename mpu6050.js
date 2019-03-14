@@ -22,6 +22,7 @@ var i2c = require('i2c-bus');
 var i2cMPU6050 = require('i2c-mpu6050');
 
 const DEFAULT_POOL_INTERVAL = 1000;
+const DEFAULT_TEST_LIMIT = 5;
 
 /**
  *Describes a MPU6050 sensor
@@ -88,10 +89,11 @@ class MPU6050 {
    *
    * @param {{interval:Number, limit:Number}} opts Options. Interval default is 1000s
    * @param {function(Error,Any)} callback Callback function (err, data)
+   * @param {boolean} test True if it is used in a test suite
    * @returns
    * @memberof MPU6050
    */
-  poolSensorData(opts, callback){
+  poolSensorData(opts, callback, test){
     //Check parameters
     if(!opts){
       //opts is null. Sets default interval
@@ -136,8 +138,35 @@ class MPU6050 {
           break;
       }
     }
-    //Calls the callback
-    callback(null, [opts, callback]);
+    //Check if the method is called in a test scenario (e.g. Mocha)
+    if(test){
+      //Check if there is a previously specified limit in opts object
+      if(!opts.limit){
+        opts.limit = DEFAULT_TEST_LIMIT;
+      }
+    }
+    let count = 0;
+    //Set an interval timer to read the sensor at every given interval
+    let intervalTimer = setInterval(() => {
+      this.sensor.read(function(err, data){
+        //Return the read result
+        if(err){
+          callback(err, null);
+        } else {
+          callback(null, [data, opts, callback]);
+        }
+        //Deal with limited numbers of consecutive reads.
+        /* istanbul ignore else  */
+        if(opts.limit){
+          count = count + 1;
+          //Checks if the limit number of consecutive reads have been reached
+          if(count >= opts.limit){
+            //Cancels the interval timer
+            clearInterval(intervalTimer);
+          }
+        }
+      });
+    })
   }
 }
 
