@@ -74,6 +74,7 @@ class MPU6050 {
     };
     //Evaluates the calibration values for acceleration
     for (const key in staticMeasure.accel) {
+      /* istanbul ignore else  */
       if (staticMeasure.accel.hasOwnProperty(key)) {
         const element = staticMeasure.accel[key];
         calibration.accel[key] = -element;
