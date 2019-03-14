@@ -99,7 +99,7 @@ class MPU6050 {
       //opts is null. Sets default interval
       opts = {
         interval: DEFAULT_POOL_INTERVAL
-      }      
+      };      
     } else {
       switch (typeof opts) {
         case 'function':
@@ -107,13 +107,13 @@ class MPU6050 {
           callback = opts;
           opts = {
             interval: DEFAULT_POOL_INTERVAL
-          }          
+          };          
           break;
         case 'number':
           //puts the supplied interval in the opts object
           opts = {
             interval: opts
-          }
+          };
           break;
         case 'string':
           //Rise an error and exits
@@ -126,7 +126,7 @@ class MPU6050 {
     }
     if(!callback){
       //If callback is not there, then substitute with a dummy function
-      callback = () => {return};
+      callback = () => {return;};
     } else {
       switch (typeof callback) {
         case 'function':
@@ -134,7 +134,7 @@ class MPU6050 {
           break;      
         default:
           //callback is anything but a function. Substitute with dummy function
-          callback = () => {return}; 
+          callback = () => {return;}; 
           break;
       }
     }

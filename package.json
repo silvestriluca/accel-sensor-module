@@ -12,6 +12,9 @@
   ],
   "author": "Luca Silvestri",
   "license": "GPL-3.0-or-later",
+  "bin": {
+    "read-mpu": "./cli.js"
+  },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.15.1",
@@ -19,6 +22,7 @@
     "nyc": "^13.3.0"
   },
   "dependencies": {
+    "commander": "^2.19.0",
     "i2c-bus": "^4.0.8",
     "i2c-mpu6050": "^2.3.0"
   }
