@@ -20,14 +20,29 @@
 
 var program = require('commander');
 //var Sensor = require('./mpu6050');
+const chalk = require('chalk');
+var pkg = require('./package.json');
 
+//Extracts cli program name from package.json
+var cmd = pkg.name;
+if (pkg.bin) {
+    for (var key in pkg.bin) {
+        cmd = key;
+        break;
+    }
+}
+//Initialize program object
 program
-  .name('read-mpu')
+  .name(cmd)
   .version('1.0.0')
   .option('-c, --connect', 'Connects to AWS IoT Core')
   .option('-i, --interval [value]', 'Interval between sensor read (ms)', parseInt)
   .option('-l, --limit [value]', 'Limit the number of reads', parseInt)
   .option('-a, --all', 'Prints all the reads from the sensor')
+  .option('--private-key [path]','Private key path')
+  .option('--public-key [path]','Public key path')
+  .option('--certificate [path]','Device certificate in PEM format')
+  .option('--ca [path]','CA certificate')
   .parse(process.argv);
 
 /*
@@ -39,8 +54,66 @@ program.on('--help', function(){
 });
 */
 
-console.log(program.connect);
-console.log(program.interval);
-console.log(program.limit);
-console.log(program.all);
-console.log(program.args);
+/**
+ *Initialize the program
+ *
+ */
+function init(){
+  //Prints start message
+  startMessage();
+  //Check if connection to AWS IoT is needed
+  if(program.connect){
+    console.log(chalk.blue('Connecting to AWS IoT...'));
+    connect2IotCore((err, data)=>{
+      if(err){
+        //Something bad happened at connection. Just state the error and quit.
+        console.error(chalk.red('Error connecting AWS IoT:'));
+        console.error(err);
+        return;
+      } else {
+        //Everything went fine. Launch main()
+        console.log(chalk.green('CONNECTED!'));
+        return main();
+      }
+    });
+  } else {
+    //No connection required. Launch main()
+    return main();
+  }
+}
+
+/**
+ *Prints out the start message
+ *
+ * @returns
+ */
+function startMessage(){
+  console.log('');
+  console.log('*****************************************************************');
+  console.log(chalk.green('read-mpu  Copyright (C) 2019  Luca Silvestri'));
+  console.log('This program comes with ABSOLUTELY NO WARRANTY.');
+  console.log('This is free software, and you are welcome to redistribute it');
+  console.log('under GPLv3 License or above');
+  console.log('*****************************************************************');
+  return;
+}
+/**
+ *Connect the sensor to AWS IoT
+ *
+ * @param {function(Error,Object)} callback Callback(err,data)
+ * @returns
+ */
+function connect2IotCore(callback){
+  console.log('AWS IoT answered!');
+  return callback(null, null);
+}
+
+/**
+ *Main procedure
+ *
+ */
+function main(){
+  console.log('************* MAIN *************');
+}
+
+init();
