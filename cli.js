@@ -22,7 +22,7 @@ var program = require('commander');
 //var Sensor = require('./mpu6050');
 
 program
-  .command('read-mpu')
+  .name('read-mpu')
   .version('1.0.0')
   .option('-c, --connect', 'Connects to AWS IoT Core')
   .option('-i, --interval [value]', 'Interval between sensor read (ms)', parseInt)
@@ -43,3 +43,4 @@ console.log(program.connect);
 console.log(program.interval);
 console.log(program.limit);
 console.log(program.all);
+console.log(program.args);
