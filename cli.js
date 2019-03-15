@@ -63,7 +63,7 @@ function init(){
   startMessage();
   //Check if connection to AWS IoT is needed
   if(program.connect){
-    console.log(chalk.blue('Connecting to AWS IoT...'));
+    console.log(chalk.magenta('Connecting to AWS IoT...'));
     connect2IotCore((err, data)=>{
       if(err){
         //Something bad happened at connection. Just state the error and quit.
