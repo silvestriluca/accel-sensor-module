@@ -19,7 +19,7 @@
 */
 
 var program = require('commander');
-//var Sensor = require('./mpu6050');
+var Sensor = require('./mpu6050');
 const chalk = require('chalk');
 var pkg = require('./package.json');
 
@@ -132,11 +132,36 @@ function styleIt(color, string){
 }
 
 /**
+ *Read sensor data
+ *
+ * @param {number} interval Interval between sensor read (ms)
+ * @param {number} limit Limit the number of reads
+ */
+function readData(interval, limit){
+  var sensor = new Sensor(0x68);
+  // eslint-disable-next-line quotes
+  console.log(styleIt('yellow', `ax         ay        az`));
+  // eslint-disable-next-line quotes
+  console.log(styleIt('yellow', `-----------------------------------`));
+  sensor.poolSensorData({interval: interval, limit: limit}, function(err, data){
+    if(err){
+      console.error(styleIt('red', 'An error occurred while reading sensor data.'));
+      console.error(styleIt('red', err.message));
+      return;
+    } else {
+      console.log(styleIt('yellow', `${data[0].accel.x}         ${data[0].accel.y}         ${data[0].accel.z}`));
+      return;
+    }
+  });
+}
+
+/**
  *Main procedure
  *
  */
 function main(){
   console.log('************* MAIN *************');
+  readData(program.interval, program.limit);
 }
 
 init();
