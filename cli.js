@@ -23,6 +23,8 @@ var program = require('commander');
 const chalk = require('chalk');
 var pkg = require('./package.json');
 
+var colorsOn = true;  //Default output is coloured => true
+
 //Extracts cli program name from package.json
 var cmd = pkg.name;
 if (pkg.bin) {
@@ -43,6 +45,7 @@ program
   .option('--public-key [path]','Public key path')
   .option('--certificate [path]','Device certificate in PEM format')
   .option('--ca [path]','CA certificate')
+  .option('--no-colors','Turns off colored output')
   .parse(process.argv);
 
 /*
@@ -59,20 +62,24 @@ program.on('--help', function(){
  *
  */
 function init(){
+  //Checks for no-color option
+  if(program.noColors){
+    colorsOn = false;
+  }
   //Prints start message
   startMessage();
   //Check if connection to AWS IoT is needed
   if(program.connect){
-    console.log(chalk.magenta('Connecting to AWS IoT...'));
+    console.log(styleIt('magenta','Connecting to AWS IoT...'));
     connect2IotCore((err, data)=>{
       if(err){
         //Something bad happened at connection. Just state the error and quit.
-        console.error(chalk.red('Error connecting AWS IoT:'));
+        console.error(styleIt('red','Error connecting AWS IoT:'));
         console.error(err);
         return;
       } else {
         //Everything went fine. Launch main()
-        console.log(chalk.green('CONNECTED!'));
+        console.log(styleIt('green','CONNECTED!'));
         return main();
       }
     });
@@ -90,7 +97,7 @@ function init(){
 function startMessage(){
   console.log('');
   console.log('*****************************************************************');
-  console.log(chalk.green('read-mpu  Copyright (C) 2019  Luca Silvestri'));
+  console.log(styleIt('green', 'read-mpu  Copyright (C) 2019  Luca Silvestri'));
   console.log('This program comes with ABSOLUTELY NO WARRANTY.');
   console.log('This is free software, and you are welcome to redistribute it');
   console.log('under GPLv3 License or above');
@@ -106,6 +113,22 @@ function startMessage(){
 function connect2IotCore(callback){
   console.log('AWS IoT answered!');
   return callback(null, null);
+}
+
+/**
+ *Formats the output string with a given color
+ *
+ * @param {string} color A chalk-related color code
+ * @param {string} string The string that has to be formatted
+ * @returns
+ */
+function styleIt(color, string){
+  if(colorsOn){
+    return chalk[color](string);
+  }
+  else {
+    return string;
+  }
 }
 
 /**
