@@ -140,9 +140,9 @@ function styleIt(color, string){
 function readData(interval, limit){
   var sensor = new Sensor(0x68);
   // eslint-disable-next-line quotes
-  console.log(styleIt('yellow', `ax         ay        az`));
+  console.log(styleIt('yellow', `ax                     ay                      az`));
   // eslint-disable-next-line quotes
-  console.log(styleIt('yellow', `-----------------------------------`));
+  console.log(styleIt('yellow', `-----------------------------------------------------------`));
   sensor.poolSensorData({interval: interval, limit: limit}, function(err, data){
     if(err){
       console.error(styleIt('red', 'An error occurred while reading sensor data.'));
