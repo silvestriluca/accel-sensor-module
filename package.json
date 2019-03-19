@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
+    "cli-table3": "^0.5.1",
     "commander": "^2.19.0",
     "i2c-bus": "^4.0.8",
     "i2c-mpu6050": "^2.3.0"

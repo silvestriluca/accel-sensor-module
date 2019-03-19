@@ -19,9 +19,10 @@
 */
 
 var program = require('commander');
-var Sensor = require('./mpu6050');
 const chalk = require('chalk');
 var pkg = require('./package.json');
+var Sensor = require('./mpu6050');
+var Table = require('cli-table3');
 
 var colorsOn = true;  //Default output is coloured => true
 
@@ -139,17 +140,23 @@ function styleIt(color, string){
  */
 function readData(interval, limit){
   var sensor = new Sensor(0x68);
+  var table = new Table({
+    colWidths: [200,200,200]
+  });
   // eslint-disable-next-line quotes
-  console.log(styleIt('yellow', `ax                     ay                      az`));
+  //console.log(styleIt('yellow', `ax                     ay                      az`));
+  table.push([styleIt('yellow','ax'),styleIt('yellow','ay'),styleIt('yellow','az')]);
   // eslint-disable-next-line quotes
-  console.log(styleIt('yellow', `-----------------------------------------------------------`));
+  //console.log(styleIt('yellow', `-----------------------------------------------------------`));
   sensor.poolSensorData({interval: interval, limit: limit}, function(err, data){
     if(err){
       console.error(styleIt('red', 'An error occurred while reading sensor data.'));
       console.error(styleIt('red', err.message));
       return;
     } else {
-      console.log(styleIt('yellow', `${data[0].accel.x}         ${data[0].accel.y}         ${data[0].accel.z}`));
+      //console.log(styleIt('yellow', `${data[0].accel.x}         ${data[0].accel.y}         ${data[0].accel.z}`));
+      table.push([styleIt('yellow', data[0].accel.x),styleIt('yellow', data[0].accel.y),styleIt('yellow', data[0].accel.z)]);
+      console.log(table.toString());
       return;
     }
   });
