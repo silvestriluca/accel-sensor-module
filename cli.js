@@ -140,13 +140,15 @@ function styleIt(color, string){
  */
 function readData(interval, limit){
   var sensor = new Sensor(0x68);
-  var table = new Table({});
+  var table = new Table({
+    colWidths: [10,10,10,10]
+  });
   //Calibrates the sensor with data at-rest (to detract the effect of G accelleration)
   var intialData = sensor.readSync();
   sensor.calibrateSensor(intialData);
   // eslint-disable-next-line quotes
   //console.log(styleIt('yellow', `ax                     ay                      az`));
-  table.push([styleIt('yellow','ax'),styleIt('yellow','ay'),styleIt('yellow','az')]);
+  table.push([styleIt('yellow','ax'),styleIt('yellow','ay'),styleIt('yellow','az'), styleIt('yellow','A')]);
   console.log(table.toString());
   // eslint-disable-next-line quotes
   //console.log(styleIt('yellow', `-----------------------------------------------------------`));
@@ -157,7 +159,7 @@ function readData(interval, limit){
       return;
     } else {
       //console.log(styleIt('yellow', `${data[0].accel.x}         ${data[0].accel.y}         ${data[0].accel.z}`));
-      table[0] = ([styleIt('yellow', data[0].accel.x),styleIt('yellow', data[0].accel.y),styleIt('yellow', data[0].accel.z)]);
+      table[0] = [styleIt('yellow', data[0].accel.x),styleIt('yellow', data[0].accel.y),styleIt('yellow', data[0].accel.z), styleIt('yellow', Math.sqrt(data[0].accel.x^2 + data[0].accel.y^2 + data[0].accel.z^2))];
       console.log(table.toString());
       return;
     }
