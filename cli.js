@@ -97,7 +97,7 @@ function init(){
       if(err){
         //Something bad happened at connection. Just state the error and quit.
         console.error(styleIt('red','Error connecting AWS IoT:'));
-        console.error(err);
+        console.error(err.message);
         return;
       } else {
         //Everything went fine. Launch main()
@@ -135,7 +135,9 @@ function startMessage(){
 function connect2IotCore(callback){
   //Check if host has been specified
   if(!program.host){
-    return callback(new Error('Failed to provide a valid hostname'), null);
+    let hostError = new Error('Failed to provide a valid hostname');
+    hostError.name = NO_HOST
+    return callback(hostError, null);
   } else {
     console.log('AWS IoT answered!');
     return callback(null, null);
