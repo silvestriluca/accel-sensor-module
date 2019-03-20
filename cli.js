@@ -35,6 +35,7 @@ var iot = {
   'caPath': 'certs/root-ca.pem',
   'clientId': 'read-mpu',
 };
+const TOPIC_PREFIX = 'device/mpu6050';
 
 //Extracts cli program name from package.json
 var cmd = pkg.name;
@@ -93,16 +94,16 @@ function init(){
   //Check if connection to AWS IoT is needed
   if(program.connect){
     console.log(styleIt('magenta','Connecting to AWS IoT...'));
-    connect2IotCore((err, data)=>{
+    connect2IotCore((err, device)=>{
       if(err){
         //Something bad happened at connection. Just state the error and quit.
         console.error(styleIt('red','Error connecting AWS IoT:'));
-        console.error(err.message);
+        console.error(styleIt('red',err.message));
         return;
       } else {
         //Everything went fine. Launch main()
         console.log(styleIt('green','CONNECTED!'));
-        return main();
+        return main(device);
       }
     });
   } else {
@@ -139,8 +140,16 @@ function connect2IotCore(callback){
     hostError.name = 'NO_HOST';
     return callback(hostError, null);
   } else {
-    console.log('AWS IoT answered!');
-    return callback(null, null);
+    iot.host = program.host;
+    console.warn(iot.host);
+    let device = awsIot.device(iot);
+    device.on('connect', () => {
+      console.log('AWS IoT connected!');
+      return callback(null, device);
+    });
+    device.on('error', (err) => {
+      return callback(err, null);
+    });
   }
 }
 
@@ -165,8 +174,9 @@ function styleIt(color, string){
  *
  * @param {number} interval Interval between sensor read (ms)
  * @param {number} limit Limit the number of reads
+ * @param {awsIot.device} device An instance of mqtt client connected to AWS IoT
  */
-function readData(interval, limit){
+function readData(interval, limit, device){
   var sensor = new Sensor(0x68);
   var table = new Table({
     colWidths: [20,20,20,20]
@@ -189,12 +199,15 @@ function readData(interval, limit){
       //console.log(styleIt('yellow', `${data[0].accel.x}         ${data[0].accel.y}         ${data[0].accel.z}`));
       let ax = data[0].accel.x,
           ay = data[0].accel.y,
-          az = data[0].accel.z;
-      table[0] = [styleIt('yellow', ax),styleIt('yellow', ay),styleIt('yellow', az), styleIt('yellow', Math.sqrt(ax**2 + ay**2 + az**2))];
+          az = data[0].accel.z,
+          a  = Math.sqrt(ax**2 + ay**2 + az**2);
+      table[0] = [styleIt('yellow', ax),styleIt('yellow', ay),styleIt('yellow', az), styleIt('yellow', a)];
       //Check if data has to be sent
-      if(sendData){
+      if(sendData && device){
         //Sends data
         table[1] = ['SENDING DATA'];
+        let dataToSend = {ax:ax, ay:ay, az:az, a:a};
+        device.publish(TOPIC_PREFIX, dataToSend);
         //Resets send data flag
         sendData = false;
         console.log(table.toString());
@@ -219,13 +232,14 @@ function startSendDataTimer(sendDataInterval){
 }
 
 /**
- *Main procedure
+ * Main procedure
  *
+ * @param {awsIot.device} device An instance of mqtt client connected to AWS IoT
  */
-function main(){
+function main(device){
   console.log('************* MAIN *************');
   startSendDataTimer(trasmitInterval);
-  readData(program.interval, program.limit);
+  readData(program.interval, program.limit, device);
 }
 
 init();
