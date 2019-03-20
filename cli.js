@@ -181,8 +181,11 @@ function readData(interval, limit){
         table[1] = ['SENDING DATA'];
         //Resets send data flag
         sendData = false;
-      }
-      console.log(table.toString());
+        console.log(table.toString());
+        table.splice(1,1);
+      } else {
+        console.log(table.toString());
+      }      
       return;
     }
   });
