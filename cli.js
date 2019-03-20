@@ -20,6 +20,7 @@
 
 var program = require('commander');
 const chalk = require('chalk');
+var awsIot = require('aws-iot-device-sdk');
 var pkg = require('./package.json');
 var Sensor = require('./mpu6050');
 var Table = require('cli-table3');
@@ -27,6 +28,13 @@ var Table = require('cli-table3');
 var colorsOn = true;  //Default output is coloured => true
 var trasmitInterval = 1000; //Default value for Interval between data transmit (ms)
 var sendData = false; //True when is time to send aggregated data to AWS IoT
+var iot = {
+  'host': '',
+  'keyPath': 'certs/private.pem.key',
+  'certPath': 'certs/certificate.pem.crt',
+  'caPath': 'certs/root-ca.pem',
+  'clientId': 'read-mpu',
+};
 
 //Extracts cli program name from package.json
 var cmd = pkg.name;
@@ -45,6 +53,7 @@ program
   .option('-l, --limit [value]', 'Limit the number of reads', parseInt)
   .option('-t, --trasmit-interval [value]', 'Interval between data transmit (s)', parseInt)
   .option('-a, --all', 'Prints all the reads from the sensor')
+  .option('-h, --host', 'AWS IoT Endpoint')
   .option('--private-key [path]','Private key path')
   .option('--public-key [path]','Public key path')
   .option('--certificate [path]','Device certificate in PEM format')
@@ -124,8 +133,13 @@ function startMessage(){
  * @returns
  */
 function connect2IotCore(callback){
-  console.log('AWS IoT answered!');
-  return callback(null, null);
+  //Check if host has been specified
+  if(!program.host){
+    return callback(new Error('Failed to provide a valid hostname'), null);
+  } else {
+    console.log('AWS IoT answered!');
+    return callback(null, null);
+  }
 }
 
 /**
@@ -197,7 +211,7 @@ function readData(interval, limit){
  * @param {number} sendDataInterval Interval in ms
  */
 function startSendDataTimer(sendDataInterval){
-  var timer = setInterval(() => {
+  setInterval(() => {
     sendData = true;
   }, sendDataInterval);
 }
