@@ -25,6 +25,8 @@ var Sensor = require('./mpu6050');
 var Table = require('cli-table3');
 
 var colorsOn = true;  //Default output is coloured => true
+var trasmitInterval = 1000; //Default value for Interval between data transmit (ms)
+var sendData = false; //True when is time to send aggregated data to AWS IoT
 
 //Extracts cli program name from package.json
 var cmd = pkg.name;
@@ -41,6 +43,7 @@ program
   .option('-c, --connect', 'Connects to AWS IoT Core')
   .option('-i, --interval [value]', 'Interval between sensor read (ms)', parseInt)
   .option('-l, --limit [value]', 'Limit the number of reads', parseInt)
+  .option('-t, --trasmit-interval [value]', 'Interval between data transmit (s)', parseInt)
   .option('-a, --all', 'Prints all the reads from the sensor')
   .option('--private-key [path]','Private key path')
   .option('--public-key [path]','Public key path')
@@ -66,6 +69,15 @@ function init(){
   //Checks for no-color option
   if(program.noColors){
     colorsOn = false;
+  }
+  //Checks for interval option
+  if(program.interval){
+    //Defaults trasmitInterval to interval provided value
+    trasmitInterval = program.interval;
+  }
+  //Checks for tramsit interval option
+  if(program.trasmitInterval){
+    trasmitInterval = program.trasmitInterval * 1000;
   }
   //Prints start message
   startMessage();
@@ -148,7 +160,7 @@ function readData(interval, limit){
   sensor.calibrateSensor(intialData);
   // eslint-disable-next-line quotes
   //console.log(styleIt('yellow', `ax                     ay                      az`));
-  table.push([styleIt('yellow','ax'),styleIt('yellow','ay'),styleIt('yellow','az'), styleIt('yellow','A')]);
+  table.push([styleIt('yellow','ax'),styleIt('yellow','ay'),styleIt('yellow','az'), styleIt('yellow','|a|')]);
   console.log(table.toString());
   // eslint-disable-next-line quotes
   //console.log(styleIt('yellow', `-----------------------------------------------------------`));
@@ -163,10 +175,28 @@ function readData(interval, limit){
           ay = data[0].accel.y,
           az = data[0].accel.z;
       table[0] = [styleIt('yellow', ax),styleIt('yellow', ay),styleIt('yellow', az), styleIt('yellow', Math.sqrt(ax**2 + ay**2 + az**2))];
+      //Check if data has to be sent
+      if(sendData){
+        //Sends data
+        table[1] = ['SENDING DATA'];
+        //Resets send data flag
+        sendData = false;
+      }
       console.log(table.toString());
       return;
     }
   });
+}
+
+/**
+ *Sets a timer to evaluate when is time to send data to AWS IoT
+ *
+ * @param {number} sendDataInterval Interval in ms
+ */
+function startSendDataTimer(sendDataInterval){
+  var timer = setInterval(() => {
+    sendData = true;
+  }, sendDataInterval);
 }
 
 /**
@@ -175,6 +205,7 @@ function readData(interval, limit){
  */
 function main(){
   console.log('************* MAIN *************');
+  startSendDataTimer(trasmitInterval);
   readData(program.interval, program.limit);
 }
 
