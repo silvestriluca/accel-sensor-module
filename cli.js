@@ -141,7 +141,7 @@ function styleIt(color, string){
 function readData(interval, limit){
   var sensor = new Sensor(0x68);
   var table = new Table({
-    colWidths: [10,10,10,10]
+    colWidths: [20,20,20,20]
   });
   //Calibrates the sensor with data at-rest (to detract the effect of G accelleration)
   var intialData = sensor.readSync();
