@@ -207,7 +207,7 @@ function readData(interval, limit, device){
         //Sends data
         table[1] = ['SENDING DATA'];
         let dataToSend = {ax:ax, ay:ay, az:az, a:a};
-        device.publish(TOPIC_PREFIX, dataToSend);
+        device.publish(TOPIC_PREFIX, JSON.stringify(dataToSend));
         //Resets send data flag
         sendData = false;
         console.log(table.toString());
