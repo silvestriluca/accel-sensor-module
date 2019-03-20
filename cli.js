@@ -136,7 +136,7 @@ function connect2IotCore(callback){
   //Check if host has been specified
   if(!program.host){
     let hostError = new Error('Failed to provide a valid hostname');
-    hostError.name = NO_HOST
+    hostError.name = 'NO_HOST';
     return callback(hostError, null);
   } else {
     console.log('AWS IoT answered!');
