@@ -181,6 +181,7 @@ function readData(interval, limit, device){
   var table = new Table({
     colWidths: [20,20,20,20]
   });
+  var maxData = {ax:0, ay:0, az:0, a:0};
   //Calibrates the sensor with data at-rest (to detract the effect of G accelleration)
   var intialData = sensor.readSync();
   sensor.calibrateSensor(intialData);
@@ -202,14 +203,19 @@ function readData(interval, limit, device){
           az = data[0].accel.z,
           a  = Math.sqrt(ax**2 + ay**2 + az**2);
       table[0] = [styleIt('yellow', ax),styleIt('yellow', ay),styleIt('yellow', az), styleIt('yellow', a)];
+      //Checks if maxData has to be updated
+      if(maxData.a <= a){
+        maxData = {ax:ax, ay:ay, az:az, a:a};
+      }
       //Check if data has to be sent
       if(sendData && device){
         //Sends data
         table[1] = ['SENDING DATA'];
-        let dataToSend = {ax:ax, ay:ay, az:az, a:a};
+        let dataToSend = maxData;
         device.publish(TOPIC_PREFIX, JSON.stringify(dataToSend));
-        //Resets send data flag
+        //Resets send data flag and the maxData object
         sendData = false;
+        maxData = {ax:0, ay:0, az:0, a:0};
         console.log(table.toString());
         table.splice(1,1);
       } else {
