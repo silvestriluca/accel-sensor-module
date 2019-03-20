@@ -54,7 +54,7 @@ program
   .option('-l, --limit [value]', 'Limit the number of reads', parseInt)
   .option('-t, --trasmit-interval [value]', 'Interval between data transmit (s)', parseInt)
   .option('-a, --all', 'Prints all the reads from the sensor')
-  .option('-h, --host', 'AWS IoT Endpoint')
+  .option('-h, --host [value]', 'AWS IoT Endpoint')
   .option('--private-key [path]','Private key path')
   .option('--public-key [path]','Public key path')
   .option('--certificate [path]','Device certificate in PEM format')
@@ -99,7 +99,7 @@ function init(){
         //Something bad happened at connection. Just state the error and quit.
         console.error(styleIt('red','Error connecting AWS IoT:'));
         console.error(styleIt('red',err.message));
-        return;
+        throw err;
       } else {
         //Everything went fine. Launch main()
         console.log(styleIt('green','CONNECTED!'));
