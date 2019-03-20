@@ -159,7 +159,10 @@ function readData(interval, limit){
       return;
     } else {
       //console.log(styleIt('yellow', `${data[0].accel.x}         ${data[0].accel.y}         ${data[0].accel.z}`));
-      table[0] = [styleIt('yellow', data[0].accel.x),styleIt('yellow', data[0].accel.y),styleIt('yellow', data[0].accel.z), styleIt('yellow', Math.sqrt(data[0].accel.x^2 + data[0].accel.y^2 + data[0].accel.z^2))];
+      let ax = data[0].accel.x,
+          ay = data[0].accel.y,
+          az = data[0].accel.z;
+      table[0] = [styleIt('yellow', ax),styleIt('yellow', ay),styleIt('yellow', az), styleIt('yellow', Math.sqrt(ax**2 + ay**2 + az**2))];
       console.log(table.toString());
       return;
     }
