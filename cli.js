@@ -45,6 +45,7 @@ if (pkg.bin) {
         break;
     }
 }
+//TODO: Add a flag for custom sensor-ID
 //Initialize program object
 program
   .name(cmd)
@@ -89,6 +90,7 @@ function init(){
   if(program.trasmitInterval){
     trasmitInterval = program.trasmitInterval * 1000;
   }
+  //TODO: Change default values for certs/keys when provided as arguments
   //Prints start message
   startMessage();
   //Check if connection to AWS IoT is needed
@@ -211,7 +213,9 @@ function readData(interval, limit, device){
       if(sendData && device){
         //Sends data
         table[1] = ['SENDING DATA'];
+        //TODO: implement --all data flag
         let dataToSend = maxData;
+        //TODO: Personalize the topic
         device.publish(TOPIC_PREFIX, JSON.stringify(dataToSend));
         //Resets send data flag and the maxData object
         sendData = false;

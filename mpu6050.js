@@ -149,12 +149,6 @@ class MPU6050 {
     //Set an interval timer to read the sensor at every given interval
     let intervalTimer = setInterval(() => {
       this.sensor.read(function(err, data){
-        //Return the read result
-        if(err){
-          callback(err, null);
-        } else {
-          callback(null, [data, opts, callback]);
-        }
         //Deal with limited numbers of consecutive reads.
         /* istanbul ignore else  */
         if(opts.limit){
@@ -165,6 +159,12 @@ class MPU6050 {
             clearInterval(intervalTimer);
           }
         }
+        //Return the read result
+        if(err){
+          return callback(err, null);
+        } else {
+          return callback(null, [data, opts, callback]);
+        }        
       });
     },opts.interval);
   }

@@ -5,7 +5,13 @@ PRs are welcome.
 
 # Instructions
 
-**Node >= 10 (LTS) is required to run this script.**
+### Requirements:
+ - Raspberry Pi board
+ - MPU6050 module
+ - Node.js >= 10 (LTS)
+
+### Setting up the Raspberry Pi board:
+This module requires a proper setup of a Raspberry Pi board. A detailed walkthrough on how to prepare the Raspberry Pi setup can be found [here](./PI-SETUP.md).
 
 ### To install locally: 
 1. Clone the repository in a directory `[directory]`
