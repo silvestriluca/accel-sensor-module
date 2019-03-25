@@ -1,14 +1,19 @@
 {
   "name": "accel-sensor-module",
   "version": "1.0.0",
-  "description": "A module to read data from an MPU6050 accelerometer and gyro sensor",
-  "main": "mpu6050.js",
+  "description": "A module and a CLI to read data from an MPU6050 accelerometer and gyro sensor",
+  "main": "index.js",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:silvestriluca/accel-sensor-module.git"
+  },
   "keywords": [
     "mpu6050",
-    "iot"
+    "iot",
+    "aws"
   ],
   "author": "Luca Silvestri",
   "license": "GPL-3.0-or-later",
