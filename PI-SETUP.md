@@ -116,7 +116,9 @@ xxxxxxxxxx-public.pem.key => public.pem.key
 
     `scp *.* pi@<Rapsberry IP>:certs`
 9. Now the certificates are on Raspberry device, inside the `~/certs` folder.
-10. Once this repo is cloned and installed on Raspberry according to [README.md](./README.md), copy the folder `~/certs` into the repo directory, so that all the certificate will be located in `~/<REPO-DIR>/certs`
+10. SSH into Raspberry and then => `mkdir .config/read-mpu`
+11. `cp certs .config/read-mpu/certs`
+12. All the certificate will be located in `~/.config/read-mpu/certs`
 
 ## E. Connect MPU-6050 module to Raspberry.
 Instruction to wire the module to a RaspberryPi and to test the connection can be found on [this blog post](http://blog.bitify.co.uk/2013/11/interfacing-raspberry-pi-and-mpu-6050.html)
