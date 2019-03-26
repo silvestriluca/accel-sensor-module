@@ -4,9 +4,9 @@
     "limit": 20,
     "host": "<The AWS IoT endpoint to use>",
     "trasmitInterval": 10,
-    "privateKeyPath": "~/certs/private.pem.key",
-    "publicKeyPath": "~/certs/public.pem.key",
-    "certificatePath": "~/certs/certificate.pem.crt",
-    "caPath": "~/certs/root-ca.pem"
+    "privateKeyPathRelativeToHome": "/.config/read-mpu/certs/private.pem.key",
+    "publicKeyPathRelativeToHome": "/.config/read-mpu/certs/public.pem.key",
+    "certificatePathRelativeToHome": "/.config/read-mpu/certs/certificate.pem.crt",
+    "caPathRelativeToHome": "/.config/read-mpu/certs/root-ca.pem"
   }
 }

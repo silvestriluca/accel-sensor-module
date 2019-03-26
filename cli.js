@@ -24,6 +24,7 @@ var awsIot = require('aws-iot-device-sdk');
 var pkg = require('./package.json');
 var Sensor = require('./mpu6050');
 var Table = require('cli-table3');
+const os = require('os');
 
 const config = require('./config/config.json');
 
@@ -32,9 +33,9 @@ var trasmitInterval = 1000; //Default value for Interval between data transmit (
 var sendData = false; //True when is time to send aggregated data to AWS IoT
 var iot = {
   'host': config.cliOptions.host,
-  'keyPath': config.cliOptions.privateKeyPath,
-  'certPath': config.cliOptions.certificatePath,
-  'caPath': config.cliOptions.caPath,
+  'keyPath': os.homedir() + config.cliOptions.privateKeyPathRelativeToHome,
+  'certPath': os.homedir() + config.cliOptions.certificatePathRelativeToHome,
+  'caPath': os.homedir() + config.cliOptions.caPathRelativeToHome,
   'clientId': 'read-mpu',
 };
 const TOPIC_PREFIX = 'device/mpu6050';
