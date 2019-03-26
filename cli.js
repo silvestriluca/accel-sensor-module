@@ -31,10 +31,10 @@ var colorsOn = true;  //Default output is coloured => true
 var trasmitInterval = 1000; //Default value for Interval between data transmit (ms)
 var sendData = false; //True when is time to send aggregated data to AWS IoT
 var iot = {
-  'host': '',
-  'keyPath': 'certs/private.pem.key',
-  'certPath': 'certs/certificate.pem.crt',
-  'caPath': 'certs/root-ca.pem',
+  'host': config.cliOptions.host,
+  'keyPath': config.cliOptions.privateKeyPath,
+  'certPath': config.cliOptions.certificatePath,
+  'caPath': config.cliOptions.caPath,
   'clientId': 'read-mpu',
 };
 const TOPIC_PREFIX = 'device/mpu6050';
@@ -148,8 +148,6 @@ function connect2IotCore(callback){
     if(program.host){
       //Priority at command line options      
       iot.host = program.host;
-    } else {
-      iot.host = config.cliOptions.host;
     }
     let device = awsIot.device(iot);
     device.on('connect', () => {
