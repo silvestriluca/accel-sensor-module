@@ -151,7 +151,6 @@ function connect2IotCore(callback){
     } else {
       iot.host = config.cliOptions.host;
     }
-    console.warn(iot.host);
     let device = awsIot.device(iot);
     device.on('connect', () => {
       console.log('AWS IoT connected!');
