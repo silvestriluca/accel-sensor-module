@@ -58,7 +58,7 @@ program
   .option('-l, --limit [value]', 'Limit the number of reads', parseInt)
   .option('-t, --trasmit-interval [value]', 'Interval between data transmit (s)', parseInt)
   .option('-a, --all', 'Prints all the reads from the sensor')
-  .option('-h, --host [value]', 'AWS IoT Endpoint')
+  .option('-H, --host [value]', 'AWS IoT Endpoint')
   .option('--private-key [path]','Private key path')
   .option('--public-key [path]','Public key path')
   .option('--certificate [path]','Device certificate in PEM format')
