@@ -1,0 +1,12 @@
+{
+  "cliOptions": {
+    "interval": 1000,
+    "limit": 20,
+    "host": "<The AWS IoT endpoint to use>",
+    "trasmitInterval": 10,
+    "privateKeyPath": "certs/private.pem.key",
+    "publicKeyPath": "certs/public.pem.key",
+    "certificatePath": "certs/certificate.pem.crt",
+    "caPath": "certs/root-ca.pem"
+  }
+}

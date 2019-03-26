@@ -25,6 +25,8 @@ var pkg = require('./package.json');
 var Sensor = require('./mpu6050');
 var Table = require('cli-table3');
 
+const config = require('./config/config.json');
+
 var colorsOn = true;  //Default output is coloured => true
 var trasmitInterval = 1000; //Default value for Interval between data transmit (ms)
 var sendData = false; //True when is time to send aggregated data to AWS IoT
@@ -137,12 +139,18 @@ function startMessage(){
  */
 function connect2IotCore(callback){
   //Check if host has been specified
-  if(!program.host){
+  if(!program.host && !config.cliOptions.host){
     let hostError = new Error('Failed to provide a valid hostname');
     hostError.name = 'NO_HOST';
     return callback(hostError, null);
   } else {
-    iot.host = program.host;
+    //Check wether host has been specified at cli input
+    if(program.host){
+      //Priority at command line options      
+      iot.host = program.host;
+    } else {
+      iot.host = config.cliOptions.host;
+    }
     console.warn(iot.host);
     let device = awsIot.device(iot);
     device.on('connect', () => {
