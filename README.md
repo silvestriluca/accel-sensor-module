@@ -17,10 +17,15 @@ This module requires a proper setup of a Raspberry Pi board. A detailed walkthro
 1. Clone the repository in a directory `[directory]`
 2. `cd [directory]`
 3. `npm install`
-4. Enjoy.
+4. `npm link`
+5. `read-mpu --help`
+6. If you want to connect to AWS generate and install the certificates as described [here](./PI-SETUP.md#certificates) 
+6. Enjoy.
 
 ### To uninstall:
-1. Remove the repo directory
+1. Go to repo directory
+2. `npm unlink`
+3. Remove the repo directory
 
 ### To run tests:
 The package includes a **full test coverage**.
@@ -33,7 +38,9 @@ Once executed you can find the coverage report in a neat html format:
 2. open with a browser the file `index.html`
 
 ### Usage:
-
+The module can:
+- be installed as a component in another node program
+- be used from the CLI by invoking `read-mpu` with the proper options. Type `read-mpu --help` for a complete list of available commands
 
 ### Notes:
 The code is fully commented.

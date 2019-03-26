@@ -78,7 +78,7 @@ MPU-6050 it's mounted on an I2C board so first you need to install the relevant 
 
     `sudo reboot`
 
-## D. Generate and install AWS IoT Certificates
+## <a name="certificates"></a> D. Generate and install AWS IoT Certificates
 1. From **AWS Management Console** select "IoT Core" and load the IoT dashboard;
 2. Secure > Policies
 3. Create a new policy. Name it `virtual-truck-policy`.
