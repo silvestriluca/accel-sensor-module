@@ -253,7 +253,6 @@ function startSendDataTimer(sendDataInterval){
  * @param {awsIot.device} device An instance of mqtt client connected to AWS IoT
  */
 function main(device){
-  console.log('************* MAIN *************');
   startSendDataTimer(trasmitInterval);
   readData(program.interval, program.limit, device);
 }
