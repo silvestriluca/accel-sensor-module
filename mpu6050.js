@@ -38,6 +38,8 @@ class MPU6050 {
   constructor(address){
     var i2c1 = i2c.openSync(1);
     this.sensor = new i2cMPU6050(i2c1,address);
+    //Executes an initial read to initialize the sensor after a cold boot.
+    this.readSync();
   }
 
   /**
