@@ -20,7 +20,7 @@ This module requires a proper setup of a Raspberry Pi board. A detailed walkthro
 4. `npm link`
 5. `read-mpu --help`
 6. If you want to connect to AWS generate and install the certificates as described [here](./PI-SETUP.md#certificates) 
-6. Enjoy.
+7. Enjoy.
 
 ### To uninstall:
 1. Go to repo directory
